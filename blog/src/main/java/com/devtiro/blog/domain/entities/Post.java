@@ -1,19 +1,17 @@
 package com.devtiro.blog.domain.entities;
 
+
 import com.devtiro.blog.domain.PostStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "posts")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
@@ -34,7 +32,7 @@ public class Post {
     private PostStatus status;
 
     @Column(nullable = false)
-    private Integer readingTime;
+    private int readingTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
@@ -44,10 +42,10 @@ public class Post {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToOne
+    @ManyToMany
     @JoinTable(
             name = "post_tags",
-            joinColumns = @JoinColumn(name="post_id"),
+            joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private Set<Tag> tags = new HashSet<>();
@@ -60,13 +58,14 @@ public class Post {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
         return Objects.equals(id, post.id) && Objects.equals(title, post.title) && Objects.equals(content, post.content) && status == post.status && Objects.equals(readingTime, post.readingTime) && Objects.equals(createdAt, post.createdAt) && Objects.equals(updatedAt, post.updatedAt);
     }
 
     @Override
-   public int hashCode() {
+    public int hashCode() {
         return Objects.hash(id, title, content, status, readingTime, createdAt, updatedAt);
     }
 
