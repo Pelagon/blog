@@ -10,8 +10,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tags")
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Builder
@@ -21,7 +21,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false,  unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @ManyToMany(mappedBy = "tags")
@@ -29,6 +29,7 @@ public class Tag {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tag tag = (Tag) o;
         return Objects.equals(id, tag.id) && Objects.equals(name, tag.name);
